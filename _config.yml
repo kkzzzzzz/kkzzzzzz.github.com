@@ -8,7 +8,7 @@ highlighter: rouge
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : kkzzzzz的博客
+title : kkzzzzzz的博客
 tagline: Site Tagline
 author :
   name : kkzzzzzz
@@ -81,6 +81,8 @@ JB :
   #
   comments :
     provider : duoshuo
+    duoshuo :
+      short_name : kkzzzzzz
     disqus :
       short_name : kkzzzzzz
     livefyre :
@@ -92,8 +94,7 @@ JB :
       num_posts: 5
       width: 580
       colorscheme: light
-    duoshuo :
-      short_name : jekyllbootstrap
+
 
   # Settings for analytics helper
   # Set 'provider' to the analytics provider you want to use.

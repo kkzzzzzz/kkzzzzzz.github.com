@@ -30,5 +30,5 @@ tags: []
 
 		git config --global user.name "kevin.zhu"
 		git config --global user.email "kevin.zhu@dianping.com"
-		git config user.name "kkzzzzz"
+		git config user.name "kkzzzzzz"
 		git config user.email "zhukaidj@gmail.com"
