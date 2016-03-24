@@ -3,7 +3,7 @@ layout: post
 title: "mac config"
 description: ""
 category:
-tags: []
+tags: [mac]
 ---
 
 
