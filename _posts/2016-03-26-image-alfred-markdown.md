@@ -34,4 +34,4 @@ tags: [markdown,workflow]
 ```
     /Users/Kevin/qiniupic/Data
 ```
-注意路径的    
+注意路径的地址 
