@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "mac config"
+title: "mac一些配置的备份"
 description: ""
 category:
 tags: [mac]
