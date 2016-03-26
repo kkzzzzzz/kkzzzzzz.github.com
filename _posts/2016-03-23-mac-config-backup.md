@@ -7,9 +7,8 @@ tags: [mac]
 ---
 
 
-#mac配置备份
 
-##git相关
+
 
 * 公司开发会用到一个gitlab账号，github也会用到一个账号，这个时候需要用到多账号配置，
 进入~/.ssh 下新建config
@@ -24,9 +23,9 @@ tags: [mac]
     	IdentityFile ~/.ssh/github_rsa
 
 		host code.dianpingoa.com
-	    HostName code.dianpingoa.com
-    	User kevin.zhu
-	    IdentityFile ~/.ssh/id_rsa
+	  	HostName code.dianpingoa.com
+  		User kevin.zhu
+	  	IdentityFile ~/.ssh/id_rsa
 
 
 	公司的设置一个全局user，github设置一个loacl user
@@ -35,4 +34,3 @@ tags: [mac]
 		git config --global user.email "kevin.zhu@dianping.com"
 		git config user.name "kkzzzzzz"
 		git config user.email "zhukaidj@gmail.com"
-~~~
