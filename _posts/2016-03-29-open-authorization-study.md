@@ -7,7 +7,7 @@ tags: [Authorization]
 ---
 {% include JB/setup %}
 
-# OAuth2.0学习笔记 #
+# OAuth2.0学习笔记
 
 ## OAuht简介
 
@@ -50,16 +50,57 @@ tags: [Authorization]
 
 ### 授权码模式
 
+> The authorization code grant type is used to obtain both access
+   tokens and refresh tokens and is optimized for confidential clients.
+
+授权码模式（authorization code）可以看到是有对第三方应用做好保密的优化的，而且它是需要通过浏览器和用户进行交互，并且需要能够接收认证服务器请求。
+
 ![认证方式一](http://7xs9oq.com1.z0.glb.clouddn.com/ss385ced73a4409438415fd438640abc85.png-960.jpg)
 
+
+
+>1. 用户访问第三方应用，第三方应用导向认证服务器，请求授权，请求包含它的标识符，重定向URL
+2. 认证服务器验证用户是否有权限，并且确定用户是否同意授权（基于浏览器进行的操作）
+3. 假设用户同意之后，认证服务器重定向到之前的URI，并且带有授权码
+4. 第三方应用拿着授权码和获得授权码的时候的重定向URI去认证服务器请求token
+5. 认证服务器验证授权码，确认重定向的URI与授权码一致，认证服务器返回token，和refresh token
+
+第五步中（理解是URI与授权码需要对应，不是拿着一个授权码就可以请求到token）
+
 ### 隐式模式
+
+隐式模式也被人称之为简单模式，它是**不支持**refresh token的，整个过程不存在和第三方应用的交互，因此refresh token是没有办法被使用的。
+
+不像授权码认证那样分隔开了授权码和token的概念，隐式模式拿到的授权码实际就是token
+
+
 ![认证方式二](http://7xs9oq.com1.z0.glb.clouddn.com/ss65c80e415d39734f43ab9a276ab41fb6.png-960.jpg)
 
+>1. 用户访问第三方应用，第三方应用导向认证服务器，请求授权，请求包含它的标识符，重定向URL
+2. 认证服务器验证用户是否有权限，并且确定用户是否同意授权（基于浏览器进行的操作）
+3. 假设用户同意之后，认证服务器重定向到之前的URI，并且在Fragment中带有token
+4. 浏览器重定向到资源服务起，并且不包含Fragment
+5. 资源服务器返回一段脚本
+6. 浏览器执行这个脚本提取到token
+7. 返回给第三方应用token
+
 ### 密码模式
+
+这种方式是将账号密码给予了第三方应用，对第三方应用的信任度比较高，比如操作系统（device operating system），高特权应用（highly privileged application）
 ![认证方式三](http://7xs9oq.com1.z0.glb.clouddn.com/ssc5e5c94b00f37a71f7821009de000838.png-960.jpg)
 
+> 1. 用户将密码给到第三方应用
+> 2. 第三方应用通过密码凭证请求认证服务器
+> 3. 认证服务器返回token
+
 ### 客户端模式
+
+第三方应用可以直接通过自己的凭证请求认证服务器
+
 ![认证方式四](http://7xs9oq.com1.z0.glb.clouddn.com/ssb97f884cfe6b0dd050f3b010bdd39655.png-960.jpg)
+
+> 1. 第三方应用通过自己的凭证，向认证服务器进行身份认证，请求token
+> 2. 认证服务器确认没有问题，返回一个token
 
 ## 参考文献
 * [The OAuth 2.0 Authorization Framework](http://tools.ietf.org/html/rfc6749)
