@@ -40,7 +40,9 @@ tags: []
 | 企业的某个项目博客 | orgname.github.io/projectname  | 	gh-pages |
 
 一般我们开发自己博客，选第一种就行，例如
+
 ![](http://7xs9oq.com1.z0.glb.clouddn.com/ssc3d89561c1fda55d54e9c6bda868727f.png-960.jpg)
+
 (之后默认以第一种做说明)
 
 在项目的setting中找到GitHub Pages 按照步骤一步一步 就可以把你的网站建立起来了，到了这一步 访问你的网站应该是ok的了（username.github.io），但是这里用到的主题或者样式，是没有什么意义的，之后我们追求自己的美观，主题会全部换掉。
@@ -102,5 +104,7 @@ rake post title="Hello World"
 ~~~
 
 注意title不支持中文，所以给你的博客写一个因为名字吧。然后在你的文章中改title
-![](http://7xs9oq.com1.z0.glb.clouddn.com/ss1f119b885b5c1e1c9ee9ad521983c08d.png-960.jpg)
+
+![](http://7xs9oq.com1.z0.glb.clouddn.com/ss64ddf994bb0053a10c145cc848b77c7b.png)
+
 这样你的文章就是显示中文名字了。
