@@ -95,59 +95,77 @@ CPU和内存之间存在着多级缓存，我们都知道越靠近CPU的缓存�
 * 简单例子
 直接使用ringbuffer
 
-
-	public static void main(String[] args) {
-		int size = 1<<10;
-		ExecutorService executors = Executors.newCachedThreadPool();
-		//创建一个disruptor，指定ringbuffer的size和处理数据的factory
-		Disruptor<TestObject> disruptor = new Disruptor<TestObject>(new TestObjectFactory(), size, executors);
-		//disruptor里面设置一个处理方式
-		disruptor.handleEventsWith(new TestObjectHandler());
-		RingBuffer<TestObject> ringBuffer = disruptor.start();
-		for (long i = 0; i < 1000; i++) {
-		//下一个可以用的序列号
-			long seq = ringBuffer.next();
-			try {
-				//这个序列号的slot 放入数据
-				TestObject valueEvent = ringBuffer.get(seq);
-				valueEvent.setValue(i);
-			} finally {
-				//发布通知，并且这一步一定要放在finally中，因为调用了ringBuffer.next(),就一定要发布，否则会导致disruptor状态的错乱
-				ringBuffer.publish(seq);
-			}
+~~~java
+public static void main(String[] args) {
+	int size = 1<<10;
+	ExecutorService executors = Executors.newCachedThreadPool();
+	//创建一个disruptor，指定ringbuffer的size和处理数据的factory
+	Disruptor<TestObject> disruptor = new Disruptor<TestObject>(new TestObjectFactory(), size, executors);
+	//disruptor里面设置一个处理方式
+	disruptor.handleEventsWith(new TestObjectHandler());
+	RingBuffer<TestObject> ringBuffer = disruptor.start();
+	for (long i = 0; i < 1000; i++) {
+	//下一个可以用的序列号
+		long seq = ringBuffer.next();
+		try {
+			//这个序列号的slot 放入数据
+			TestObject valueEvent = ringBuffer.get(seq);
+			valueEvent.setValue(i);
+		} finally {
+			//发布通知，并且这一步一定要放在finally中，因为调用了ringBuffer.next(),就一定要发布，否则会导致disruptor状态的错乱
+			ringBuffer.publish(seq);
 		}
-		disruptor.shutdown();
-		executors.shutdown();
 	}
+	disruptor.shutdown();
+	executors.shutdown();
+}
+~~~
 
 * 复杂例子
+
 ![多消费者](http://7xs9oq.com1.z0.glb.clouddn.com/ss101c2398bb10ddd4afea9d0ce5b6d452.png-960.jpg)
 这个例子中，我们需要有不同的消费者，并且有些消费者之间存在依赖关系，有些消费者之间可以并行处理。
 
+~~~java
+public static void main(String[] args) throws InterruptedException {
+	long beginTime = System.currentTimeMillis();
 
-	public static void main(String[] args) throws InterruptedException {
-		long beginTime=System.currentTimeMillis();
-		int bufferSize=4;
-		ExecutorService executor= Executors.newFixedThreadPool(10);//大于consumer的数量
+	int bufferSize = 4;
+	ExecutorService executor = Executors.newFixedThreadPool(10);// 大于consumer的数量
 
-		Disruptor<TestObject> disruptor = new Disruptor<TestObject>(new TestObjectFactory(), bufferSize, executor, ProducerType.SINGLE, new BusySpinWaitStrategy());
-		//使用disruptor创建消费者AnalysisHandler,CalcHandler，两个可以并行执行
-		EventHandlerGroup<TestObject> handlerGroup=disruptor.handleEventsWith(new TestObjectAnalysisHandler(),new TestObjectCalcHandler());
-		//声明在AnalysisHandler,CalcHandler完事之后执行NotifyHandler
-		EventHandlerGroup<TestObject> then = handlerGroup.then(new TestObjectNotifyHandler());
-		//最终调用写入DB的handler,这里有启用多个线程，进行数据的写入
-		then.thenHandleEventsWithWorkerPool(new TestObjectDBHandler(),new TestObjectDBHandler());
-		//上面的也可以直接通过链式调用
-		//disruptor.handleEventsWith(new TestObjectAnalysisHandler(),new TestObjectCalcHandler()).then(new TestObjectNotifyHandler()).thenHandleEventsWithWorkerPool(new TestObjectDBHandler(),new TestObjectDBHandler());
-		disruptor.start();//启动
-		CountDownLatch latch=new CountDownLatch(1);
-		//生产者准备
-		executor.submit(new TestObjectPublisher(latch, disruptor));
-		latch.await();//等待生产者完事.
-		disruptor.shutdown();
-		executor.shutdown();
-		System.out.println("总耗时:"+(System.currentTimeMillis()-beginTime));
-	}
+	Disruptor<TestObject> disruptor = new Disruptor<TestObject>(new TestObjectFactory(), bufferSize, executor,
+			ProducerType.SINGLE, new BusySpinWaitStrategy());
+
+	// //使用disruptor创建消费者AnalysisHandler,CalcHandler，两个可以并行执行
+	// EventHandlerGroup<TestObject>
+	// handlerGroup=disruptor.handleEventsWith(new
+	// TestObjectAnalysisHandler(),new TestObjectCalcHandler());
+	//
+	// //声明在AnalysisHandler,CalcHandler完事之后执行NotifyHandler
+	// EventHandlerGroup<TestObject> then = handlerGroup.then(new
+	// TestObjectNotifyHandler());
+	//
+	// //最终调用多个线程，进行数据的写入
+	// then.thenHandleEventsWithWorkerPool(new TestObjectDBHandler(),new
+	// TestObjectDBHandler());
+
+	// 上面的也可以直接通过链式调用
+	disruptor.handleEventsWith(new TestObjectAnalysisHandler(), new TestObjectCalcHandler())
+			.then(new TestObjectNotifyHandler())
+			.thenHandleEventsWithWorkerPool(new TestObjectDBHandler(), new TestObjectDBHandler());
+
+	disruptor.start();// 启动
+
+	CountDownLatch latch = new CountDownLatch(1);
+	// 生产者准备
+	executor.submit(new TestObjectPublisher(latch, disruptor));
+	latch.await();// 等待生产者完事.
+	disruptor.shutdown();
+	executor.shutdown();
+
+	System.out.println("总耗时:" + (System.currentTimeMillis() - beginTime));
+}
+~~~
 
 [代码地址](https://github.com/kkzzzzzz/java/blob/master/src/main/java/DisruptorSample/ComplexDemo.java)
 
