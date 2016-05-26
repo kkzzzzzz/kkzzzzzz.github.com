@@ -95,6 +95,7 @@ CPU和内存之间存在着多级缓存，我们都知道越靠近CPU的缓存�
 * 简单例子
 直接使用ringbuffer
 
+
 	public static void main(String[] args) {
 		int size = 1<<10;
 		ExecutorService executors = Executors.newCachedThreadPool();
@@ -123,6 +124,7 @@ CPU和内存之间存在着多级缓存，我们都知道越靠近CPU的缓存�
 ![多消费者](http://7xs9oq.com1.z0.glb.clouddn.com/ss101c2398bb10ddd4afea9d0ce5b6d452.png-960.jpg)
 这个例子中，我们需要有不同的消费者，并且有些消费者之间存在依赖关系，有些消费者之间可以并行处理。
 
+
 	public static void main(String[] args) throws InterruptedException {
 		long beginTime=System.currentTimeMillis();
 		int bufferSize=4;
@@ -148,6 +150,7 @@ CPU和内存之间存在着多级缓存，我们都知道越靠近CPU的缓存�
 	}
 
 [代码地址](https://github.com/kkzzzzzz/java/blob/master/src/main/java/DisruptorSample/ComplexDemo.java)
+
 ## 应用场景:
 个人思考下来，它适合一切异步环境，但是对于并发量小的场景不一定需要。在log4j2中，已经使用了disruptor进行日志记录。同样是用异步，选择disruptor会更快。
 
