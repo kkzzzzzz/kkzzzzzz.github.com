@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "linux command"
+title: "linux命令"
 description: ""
 category:
-tags: []
+tags: [shell]
 ---
 {% include JB/setup %}
 
