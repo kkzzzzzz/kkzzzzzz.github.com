@@ -3,7 +3,7 @@ layout: post
 title: "七周七并发之Lambda架构"
 description: ""
 category: [study]
-tags: [big data,concurrent]
+tags: [并发,big data,concurrent]
 ---
 {% include JB/setup %}
 
@@ -11,4 +11,3 @@ tags: [big data,concurrent]
 
 
 ### [点击查看原图](/img/Lambda.png)
- 

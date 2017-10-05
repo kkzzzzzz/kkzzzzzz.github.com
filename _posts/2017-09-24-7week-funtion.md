@@ -3,7 +3,7 @@ layout: post
 title: "七周七并发之函数式编程"
 description: ""
 category:
-tags: []
+tags: [并发，读书]
 ---
 {% include JB/setup %}
 
