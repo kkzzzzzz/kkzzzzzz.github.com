@@ -16,6 +16,8 @@ author :
   github : kkzzzzzz
   twitter : kk_zzzzzz
 
+paginate: 5 # 指定每页多少条
+paginate_path: "http://kkzzzzzz.github.io" # 指定每页的url
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt

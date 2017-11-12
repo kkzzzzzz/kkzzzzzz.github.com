@@ -3,11 +3,10 @@ layout: post
 title: "架构设计原则"
 description: ""
 category:
+summary: 架构设计常用方法和基础原则
 tags: [架构]
 ---
 {% include JB/setup %}
-
-# 架构设计原则
 
 
 ## 软件设计原则
@@ -90,7 +89,7 @@ Basically Available，基本可用是指分布式系统在出现故障时，允�
 #### 软状态
 Soft State，允许不同节点间副本同步的延迟就是软状态的体现
 
-#### 最终一致性 
+#### 最终一致性
 Eventual Consistency，系统中的所有数据副本经过一段时间后，最终能够达成一致状态
 
 
